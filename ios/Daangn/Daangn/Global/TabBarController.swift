@@ -18,7 +18,7 @@ final class TabBarController: UITabBarController {
         let homeNavigationController = createNavigationController(with: HomeViewController(), title: "홈화면", tabBarIconName: "house")
         let salesNavigationController = createNavigationController(with: SalesViewController(), title: "판매내역", tabBarIconName: "newspaper")
         let watchNavigationController = createNavigationController(with: WatchlistViewController(), title: "관심목록", tabBarIconName: "heart")
-        let chatNavigationController = createNavigationController(with: ChatViewController(), title: "채팅", tabBarIconName: "message")
+        let chatNavigationController = createNavigationController(with: ChatListViewController(), title: "채팅", tabBarIconName: "message")
         let accountNavigationController = createNavigationController(with: MyAccountViewController(), title: "내 계정", tabBarIconName: "person")
         
         let controllers: [UIViewController] = [
