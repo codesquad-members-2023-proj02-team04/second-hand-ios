@@ -38,6 +38,15 @@
 		F4029F562A3B96F100ECEABD /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4029F552A3B96F100ECEABD /* LoginButton.swift */; };
 		F4029F582A3BA54400ECEABD /* TownButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4029F572A3BA54400ECEABD /* TownButton.swift */; };
 		F4029F5A2A3BFE5500ECEABD /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4029F592A3BFE5500ECEABD /* CreateAccountViewController.swift */; };
+		F43818342A46DA8900B3FB20 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43818332A46DA8900B3FB20 /* KeychainManager.swift */; };
+		F43818362A46DAB200B3FB20 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43818352A46DAB200B3FB20 /* AuthManager.swift */; };
+		F441BD042A492D7100702186 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD032A492D7100702186 /* LoginViewController.swift */; };
+		F441BD062A49347400702186 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD052A49347400702186 /* ErrorHandler.swift */; };
+		F441BD082A4950C100702186 /* OAuthProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD072A4950C100702186 /* OAuthProvider.swift */; };
+		F441BD0C2A49E45600702186 /* WindowHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD0B2A49E45600702186 /* WindowHandler.swift */; };
+		F441BD0E2A49E69400702186 /* LoginResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD0D2A49E69400702186 /* LoginResult.swift */; };
+		F441BD102A49EE7E00702186 /* UserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD0F2A49EE7E00702186 /* UserInfo.swift */; };
+		F441BD122A4A623400702186 /* UIAlertController+init.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD112A4A623400702186 /* UIAlertController+init.swift */; };
 		F47AFF652A3C8AAB00BA75A1 /* CategoryCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47AFF642A3C8AAB00BA75A1 /* CategoryCollectionViewCell.swift */; };
 		F49F98C22A305FAF00609856 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49F98C12A305FAF00609856 /* AppDelegate.swift */; };
 		F49F98C42A305FAF00609856 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49F98C32A305FAF00609856 /* SceneDelegate.swift */; };
@@ -86,6 +95,15 @@
 		F4029F552A3B96F100ECEABD /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
 		F4029F572A3BA54400ECEABD /* TownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TownButton.swift; sourceTree = "<group>"; };
 		F4029F592A3BFE5500ECEABD /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		F43818332A46DA8900B3FB20 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		F43818352A46DAB200B3FB20 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		F441BD032A492D7100702186 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		F441BD052A49347400702186 /* ErrorHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		F441BD072A4950C100702186 /* OAuthProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuthProvider.swift; sourceTree = "<group>"; };
+		F441BD0B2A49E45600702186 /* WindowHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowHandler.swift; sourceTree = "<group>"; };
+		F441BD0D2A49E69400702186 /* LoginResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginResult.swift; sourceTree = "<group>"; };
+		F441BD0F2A49EE7E00702186 /* UserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfo.swift; sourceTree = "<group>"; };
+		F441BD112A4A623400702186 /* UIAlertController+init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+init.swift"; sourceTree = "<group>"; };
 		F47AFF642A3C8AAB00BA75A1 /* CategoryCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCollectionViewCell.swift; sourceTree = "<group>"; };
 		F49F98BE2A305FAF00609856 /* Daangn.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Daangn.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F49F98C12A305FAF00609856 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -123,6 +141,7 @@
 				4F35D2602A3813B900DE2CBA /* WatchlistViewController.swift */,
 				4F35D2642A3813F100DE2CBA /* ChatViewController.swift */,
 				4F35D2662A3813FE00DE2CBA /* MyAccountViewController.swift */,
+				F441BD032A492D7100702186 /* LoginViewController.swift */,
 				F4029F592A3BFE5500ECEABD /* CreateAccountViewController.swift */,
 				4F35D2682A38816A00DE2CBA /* CategoryViewController.swift */,
 				4F35D26A2A39823200DE2CBA /* ConfigureTown.swift */,
@@ -154,6 +173,7 @@
 			children = (
 				F4029F222A3B54F800ECEABD /* UIView+Radius.swift */,
 				F4029F262A3B557500ECEABD /* UILabel+style.swift */,
+				F441BD112A4A623400702186 /* UIAlertController+init.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -162,11 +182,14 @@
 			isa = PBXGroup;
 			children = (
 				F4029F202A3B54D200ECEABD /* Radius.swift */,
-				F4D525782A41C5DE00413119 /* NetworkManager.swift */,
-				F4D525822A4513F100413119 /* NetworkError.swift */,
+				F441BD052A49347400702186 /* ErrorHandler.swift */,
+				F441BD0B2A49E45600702186 /* WindowHandler.swift */,
+				F43818322A46DA7700B3FB20 /* Network */,
 				F4D5257A2A41C94100413119 /* DTO.swift */,
 				F4D525842A45173B00413119 /* JWToken.swift */,
 				F4D525862A45519B00413119 /* SignUpTempInfo.swift */,
+				F441BD0F2A49EE7E00702186 /* UserInfo.swift */,
+				F43818372A46DABA00B3FB20 /* Auth */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -215,6 +238,26 @@
 				F4029F402A3B5D6E00ECEABD /* CategoryFilterCollectionViewCell.swift */,
 			);
 			path = CategoryFilter;
+			sourceTree = "<group>";
+		};
+		F43818322A46DA7700B3FB20 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F4D525782A41C5DE00413119 /* NetworkManager.swift */,
+				F4D525822A4513F100413119 /* NetworkError.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		F43818372A46DABA00B3FB20 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				F43818332A46DA8900B3FB20 /* KeychainManager.swift */,
+				F43818352A46DAB200B3FB20 /* AuthManager.swift */,
+				F441BD072A4950C100702186 /* OAuthProvider.swift */,
+				F441BD0D2A49E69400702186 /* LoginResult.swift */,
+			);
+			path = Auth;
 			sourceTree = "<group>";
 		};
 		F47AFF662A3DA28B00BA75A1 /* CategoryCollection */ = {
@@ -395,17 +438,21 @@
 				F49F98C22A305FAF00609856 /* AppDelegate.swift in Sources */,
 				F4029F382A3B5B4500ECEABD /* ProductListCollectionViewCell.swift in Sources */,
 				F4029F292A3B569B00ECEABD /* ProductListImageView.swift in Sources */,
+				F441BD102A49EE7E00702186 /* UserInfo.swift in Sources */,
 				F4029F232A3B54F800ECEABD /* UIView+Radius.swift in Sources */,
 				F49F98C42A305FAF00609856 /* SceneDelegate.swift in Sources */,
 				F4029F302A3B56D800ECEABD /* ProductStateBadge.swift in Sources */,
 				F4AEA7F42A3617D200B00B03 /* TabBarController.swift in Sources */,
 				F4029F352A3B5A8200ECEABD /* CollectionViewLayoutGenerator.swift in Sources */,
+				F43818362A46DAB200B3FB20 /* AuthManager.swift in Sources */,
 				F4029F4D2A3B61A400ECEABD /* SalesViewController.swift in Sources */,
+				F43818342A46DA8900B3FB20 /* KeychainManager.swift in Sources */,
 				F4D525852A45173B00413119 /* JWToken.swift in Sources */,
 				F4029F2E2A3B56D300ECEABD /* PaddedLabel.swift in Sources */,
 				F4D525832A4513F100413119 /* NetworkError.swift in Sources */,
 				F4029F442A3B5D6E00ECEABD /* CategoryFilterCollectionView.swift in Sources */,
 				F4029F2C2A3B56CB00ECEABD /* BorderView.swift in Sources */,
+				F441BD062A49347400702186 /* ErrorHandler.swift in Sources */,
 				F4029F472A3B5D9900ECEABD /* Category.swift in Sources */,
 				F4029F322A3B571300ECEABD /* ProductState.swift in Sources */,
 				F4029F3D2A3B5CE700ECEABD /* ProductListCollectionView.swift in Sources */,
@@ -417,20 +464,25 @@
 				F4029F542A3B904200ECEABD /* IDField.swift in Sources */,
 				F4029F392A3B5B4500ECEABD /* LoadCollectionViewCell.swift in Sources */,
 				F49F98C22A305FAF00609856 /* AppDelegate.swift in Sources */,
+				F441BD0E2A49E69400702186 /* LoginResult.swift in Sources */,
 				F4D525792A41C5DE00413119 /* NetworkManager.swift in Sources */,
 				4F35D2672A3813FE00DE2CBA /* MyAccountViewController.swift in Sources */,
+				F441BD082A4950C100702186 /* OAuthProvider.swift in Sources */,
 				F49F98C42A305FAF00609856 /* SceneDelegate.swift in Sources */,
 				4F35D26B2A39823200DE2CBA /* ConfigureTown.swift in Sources */,
 				F4AEA7F42A3617D200B00B03 /* TabBarController.swift in Sources */,
 				F4029F5A2A3BFE5500ECEABD /* CreateAccountViewController.swift in Sources */,
 				4F35D2612A3813B900DE2CBA /* WatchlistViewController.swift in Sources */,
 				4FE271542A31C0F50002AE35 /* ColorStyle.swift in Sources */,
+				F441BD042A492D7100702186 /* LoginViewController.swift in Sources */,
 				4FE271562A31C4820002AE35 /* FontStyle.swift in Sources */,
 				4F35D2652A3813F100DE2CBA /* ChatViewController.swift in Sources */,
 				F4029F522A3B812500ECEABD /* ProfileImageButton.swift in Sources */,
+				F441BD0C2A49E45600702186 /* WindowHandler.swift in Sources */,
 				4F35D2692A38816A00DE2CBA /* CategoryViewController.swift in Sources */,
 				4F35D25F2A38139B00DE2CBA /* HomeViewController.swift in Sources */,
 				F4D525872A45519B00413119 /* SignUpTempInfo.swift in Sources */,
+				F441BD122A4A623400702186 /* UIAlertController+init.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

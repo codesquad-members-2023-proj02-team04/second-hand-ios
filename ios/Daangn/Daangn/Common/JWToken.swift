@@ -38,4 +38,9 @@ struct JWToken {
         let result = value(from: key)
         return result as? String
     }
+    
+    func getInt(key: String) -> Int? {
+        let result = value(from: key)
+        return result as? Int
+    }
 }

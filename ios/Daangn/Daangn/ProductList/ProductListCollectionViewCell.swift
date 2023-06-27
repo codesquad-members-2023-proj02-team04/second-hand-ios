@@ -169,7 +169,9 @@ final class ProductListCollectionViewCell: UICollectionViewCell {
     }
     
     @objc func tapped() {
+#if DEBUG
         print("tap")
+#endif
     }
 }
 
@@ -177,7 +179,7 @@ extension ProductListCollectionViewCell {
     // MARK: Cell Configure
     
     func configure() {
-//        productImage.image = UIImage(named: "")
+        //        productImage.image = UIImage(named: "")
         titleLabel.text = "글 제목"
         locationLabel.text = "역삼동"
         timeStampLabel.text = "2시간 전"
@@ -191,7 +193,7 @@ extension ProductListCollectionViewCell {
 
 extension ProductListCollectionViewCell {
     // MARK: Static Properties
-
+    
     private static let footnoteLabelMaker: (String?) -> UILabel = { text in
         let label = UILabel(frame: .zero)
         label.text = text
@@ -199,7 +201,7 @@ extension ProductListCollectionViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }
-
+    
     private static let iconImageViewMaker: (String) -> UIImageView = { symbolName in
         let imageView = UIImageView(image: UIImage(systemName: symbolName))
         imageView.tintColor = ColorStyle.gray900
@@ -207,5 +209,5 @@ extension ProductListCollectionViewCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }
-
+    
 }
