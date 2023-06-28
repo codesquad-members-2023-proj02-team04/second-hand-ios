@@ -8,6 +8,9 @@
 import UIKit
 
 class ChatListViewController: UIViewController {
+    typealias ChatCell = ChatListCollectionViewCell
+    typealias LoadCell = LoadCollectionViewCell
+    
     private let border = BorderLine(height: 1)
     
     private let collectionView = UICollectionView(
@@ -21,11 +24,14 @@ class ChatListViewController: UIViewController {
         self.title = "채팅"
         setCollectionView()
         setLayout()
+        applyUpdatedSnapshot()
     }
     
     private func setCollectionView() {
         let layout = CollectionViewLayoutGenerator.createListLayout()
         collectionView.collectionViewLayout = layout
+        collectionView.register(ChatCell.self, forCellWithReuseIdentifier: "\(ChatCell.self)")
+        collectionView.register(LoadCell.self, forCellWithReuseIdentifier: "\(LoadCell.self)")
     }
     
     private func setLayout() {
@@ -34,7 +40,6 @@ class ChatListViewController: UIViewController {
             border.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             border.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             border.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            border.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -45,5 +50,15 @@ class ChatListViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: border.bottomAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    private func applyUpdatedSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<ChatListSection, ChatListItem>()
+        snapshot.appendSections([.chat, .load])
+        // TODO: 임시 코드 수정
+        let chats = (1...100).map { ChatListItem.chat($0) }
+        snapshot.appendItems(chats, toSection: .chat)
+        if true { snapshot.appendItems([.load], toSection: .load) }
+        dataSource.apply(snapshot, animatingDifferences: true)
     }
 }

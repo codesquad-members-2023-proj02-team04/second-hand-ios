@@ -34,7 +34,7 @@ class PaddedLabel: UILabel {
 }
 
 class RoundedPaddedLabel: PaddedLabel {
-    init(radius: Radius, inset: UIEdgeInsets) {
+    init(radius: CGFloat, inset: UIEdgeInsets) {
         super.init(inset: inset)
         setRadius(radius: .roundedRectangle)
     }

@@ -47,7 +47,7 @@ final class ProductListCollectionViewCell: UICollectionViewCell {
     
     private let timeStampLabel: UILabel = ProductListCollectionViewCell.footnoteLabelMaker(nil)
     
-    private let stateBadge: ProductStateBadge = ProductStateBadge(radius: .roundedRectangle, inset: .init())
+    private let stateBadge: ProductStateBadge = ProductStateBadge(radius: 8, inset: .init())
     
     private let priceLabel: UILabel = {
         let label = UILabel(frame: .zero)

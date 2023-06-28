@@ -10,7 +10,7 @@ import UIKit
 final class ProductStateBadge: RoundedPaddedLabel {
     private static let edgeInset = UIEdgeInsets(top: 3, left: 8, bottom: 3, right: 8)
     
-    override init(radius: Radius, inset: UIEdgeInsets) {
+    override init(radius: CGFloat, inset: UIEdgeInsets) {
         super.init(radius: radius, inset: Self.edgeInset)
         setProperties()
     }
