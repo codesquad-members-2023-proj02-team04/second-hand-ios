@@ -19,7 +19,7 @@ final class NetworkManager {
     }
     
     private func makePath(with pathItems: [String]) -> String {
-        let base = APICredential.baseURL
+        let base = APICredential.baseURL + "/api"
         return pathItems.reduce(base) { partial, item in partial + "/\(item)" }
     }
 }
@@ -115,7 +115,7 @@ extension NetworkManager {
     func getJWT(with authCode: String) async throws -> JWToken {
         do {
             let (data, response) = try await get(
-                path: ["api", "login"],
+                path: ["login"],
                 queries: ["code": authCode, "clientType": "ios"],
                 authorized: .none
             )
@@ -142,7 +142,7 @@ extension NetworkManager {
     ) async throws -> JWToken {
         let (data, response) = try await post(
             data: data,
-            path: ["api", "signup"],
+            path: ["signup"],
             authorized: .temp(tempJWT)
         )
         
@@ -164,7 +164,7 @@ extension NetworkManager {
     
     func validateJWT(_ jwt: JWToken) async throws -> Bool {
         let (_, response) = try await get(
-            path: ["api", "user", "validateToken"],
+            path: ["user", "validateToken"],
             authorized: .temp(jwt)
         )
         
