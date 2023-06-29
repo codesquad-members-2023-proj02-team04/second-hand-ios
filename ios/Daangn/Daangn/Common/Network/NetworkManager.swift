@@ -107,6 +107,14 @@ extension NetworkManager {
         }
         return result
     }
+    
+    private func decodeAndGet<T: Decodable>(from data: Data) throws -> T {
+        let response = try JSONDecoder().decode(Response<T>.self, from: data)
+        guard let data = response.data else {
+            throw NetworkError.noData
+        }
+        return data
+    }
 }
 
 // MARK: - Util
@@ -127,7 +135,9 @@ extension NetworkManager {
             
             let jwtValue = try decodeAndGetJWT(from: data)
             switch response.statusCode {
-            case 200: return JWToken(kind: .final, value: jwtValue)
+            case 200:
+                print("[final] \(jwtValue)")
+                return JWToken(kind: .final, value: jwtValue)
             case 302: return JWToken(kind: .temp, value: jwtValue)
             default: throw NetworkError.unDefinedError
             }
@@ -147,13 +157,14 @@ extension NetworkManager {
         )
         
         guard let response = response as? HTTPURLResponse else {
-            throw NetworkError.noResponseOrNotHTTPResponse
+            throw NetworkError.noResponse
         }
         
         print(response.statusCode)
         switch response.statusCode {
         case 200:
             let finalJWTString = try decodeAndGetJWT(from: data)
+            print("[final] \(finalJWTString)")
             return JWToken(kind: .final, value: finalJWTString)
         case 400:
             throw NetworkError.failToPost
@@ -169,9 +180,38 @@ extension NetworkManager {
         )
         
         guard let response = response as? HTTPURLResponse else {
-            throw NetworkError.noResponseOrNotHTTPResponse
+            throw NetworkError.noResponse
         }
         print(response.statusCode)
         return response.statusCode == 200 ? true : false
+    }
+    
+    func getProducts(
+        page: Int,
+        locationId: Int? = nil,
+        categoryId: Int? = nil
+    ) async throws -> ProductList {
+        var queries = [ "page": "\(page)" ]
+        if let locationId { queries.updateValue("\(locationId)", forKey: "locationId") }
+        if let categoryId { queries.updateValue("\(categoryId)", forKey: "categoryId") }
+        
+        let (data, response) = try await get(
+            path: ["products"],
+            queries: queries
+        )
+        
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.noResponse
+        }
+        
+        print(response.statusCode)
+        switch response.statusCode {
+        case 200:
+            let productList: ProductList = try decodeAndGet(from: data)
+            return productList
+        case 404: throw NetworkError.notFound
+        case 500: throw NetworkError.serverBroken
+        default: throw NetworkError.unDefinedError
+        }
     }
 }

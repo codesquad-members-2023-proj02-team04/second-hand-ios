@@ -19,7 +19,7 @@ final class HomeViewController: UIViewController {
         setLayout()
         applyUpdatedSnapshot()
         
-//        get()
+        getProducts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -81,6 +81,14 @@ final class HomeViewController: UIViewController {
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
-    private func get() {
+    private func getProducts() {
+        Task {
+            do {
+                let list = try await manager.getProducts(page: 0)
+                guard let products = list.products else { throw NetworkError.noData }
+            } catch {
+                print(error)
+            }
+        }
     }
 }
