@@ -131,7 +131,7 @@ extension LoginViewController {
             Task { [weak self] in
                 guard let self else { return }
                 do {
-                    let jwt = try await self.manager.requestJWT(with: authCode)
+                    let jwt = try await self.manager.getJWT(with: authCode)
                     switch jwt.kind {
                     case .final:
                         AuthManager().saveToken(jwt)

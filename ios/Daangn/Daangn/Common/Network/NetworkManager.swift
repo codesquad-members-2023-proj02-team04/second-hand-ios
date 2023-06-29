@@ -18,30 +18,6 @@ final class NetworkManager {
         self.session = session
     }
     
-    private func decodeJson<T: Decodable>(type: T.Type, fromJson data: Data) -> T? {
-        var result: T? = nil
-        do {
-            result = try JSONDecoder().decode(type, from: data)
-        } catch {
-#if DEBUG
-            print(error)
-#endif
-        }
-        return result
-    }
-    
-    private func encodeJson<T: Encodable>(data: T) -> Data? {
-        var json: Data? = nil
-        do {
-            json = try JSONEncoder().encode(data)
-        } catch {
-#if DEBUG
-            print(error)
-#endif
-        }
-        return json
-    }
-    
     private func makePath(with pathItems: [String]) -> String {
         let base = APICredential.baseURL
         return pathItems.reduce(base) { partial, item in partial + "/\(item)" }
@@ -49,9 +25,16 @@ final class NetworkManager {
 }
 
 extension NetworkManager {
-    enum HTTPMethod: String {
-        case get = "GET"
-        case post = "POST"
+    enum HTTPMethod {
+        case get
+        case post(data: Encodable)
+        
+        var method: String {
+            switch self {
+            case .get: return "GET"
+            case .post: return "POST"
+            }
+        }
     }
     
     enum Authorization {
@@ -62,7 +45,8 @@ extension NetworkManager {
     
     static let defaultTimeoutInterval: TimeInterval = 15
     
-    func get(
+    private func httpRequest(
+        method: HTTPMethod,
         path: [String] = [],
         queries: RequestParameters = [:],
         authorized: Authorization = .existing
@@ -73,8 +57,17 @@ extension NetworkManager {
         urlcomponent.queryItems = queryItems
         guard let url = urlcomponent.url else { throw NetworkError.unDefinedError }
         var request = URLRequest(url: url)
-        request.httpMethod = HTTPMethod.get.rawValue
         request.timeoutInterval = Self.defaultTimeoutInterval
+        request.httpMethod = HTTPMethod.get.method
+        
+        switch method {
+        case .get:
+            request.httpMethod = HTTPMethod.get.method
+        case .post(let data):
+            request.httpMethod = HTTPMethod.post(data: data).method
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.httpBody = try JSONEncoder().encode(data)
+        }
         
         switch authorized {
         case .existing:
@@ -87,18 +80,28 @@ extension NetworkManager {
         }
         return try await session.data(for: request)
     }
+    
+    private func get(
+        path: [String] = [],
+        queries: RequestParameters = [:],
+        authorized: Authorization = .existing
+    ) async throws -> (data: Data, response: URLResponse) {
+        try await httpRequest(method: .get, path: path, queries: queries, authorized: authorized)
+    }
+    
+    private func post<PostData: Encodable>(
+        data: PostData,
+        path: [String] = [],
+        queries: RequestParameters = [:],
+        authorized: Authorization = .existing
+    ) async throws -> (data: Data, response: URLResponse) {
+        try await httpRequest(method: .post(data: data), path: path, queries: queries, authorized: authorized)
+    }
 }
 
 extension NetworkManager {
-    func getJWT(from data: Data) throws -> String {
-        guard let finalJWTResponse = decodeJson(type: Response<String>.self, fromJson: data) else {
-            throw NetworkError.failToDecodeJWT
-        }
-        
-#if DEBUG
-        dump(finalJWTResponse)
-#endif
-        
+    private func decodeAndGetJWT(from data: Data) throws -> String {
+        let finalJWTResponse = try JSONDecoder().decode(Response<String>.self, from: data)
         guard let result = finalJWTResponse.data else {
             throw NetworkError.invalidData
         }
@@ -109,7 +112,7 @@ extension NetworkManager {
 // MARK: - Util
 
 extension NetworkManager {
-    func requestJWT(with authCode: String) async throws -> JWToken {
+    func getJWT(with authCode: String) async throws -> JWToken {
         do {
             let (data, response) = try await get(
                 path: ["api", "login"],
@@ -120,12 +123,9 @@ extension NetworkManager {
             guard let response = response as? HTTPURLResponse else {
                 throw NetworkError.noResponse
             }
-            
-            #if DEBUG
             print(response.statusCode)
-            #endif
             
-            let jwtValue = try getJWT(from: data)
+            let jwtValue = try decodeAndGetJWT(from: data)
             switch response.statusCode {
             case 200: return JWToken(kind: .final, value: jwtValue)
             case 302: return JWToken(kind: .temp, value: jwtValue)
@@ -140,70 +140,38 @@ extension NetworkManager {
         tempJWT: JWToken,
         data: RequestData
     ) async throws -> JWToken {
-        let urlString = APICredential.baseURL + "/api/signup"
-        guard let url = URL(string: urlString) else { throw NetworkError.unDefinedError }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.addValue("Bearer \(tempJWT.value)", forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.httpBody = encodeJson(data: data)
-        request.timeoutInterval = 15
+        let (data, response) = try await post(
+            data: data,
+            path: ["api", "signup"],
+            authorized: .temp(tempJWT)
+        )
         
-        do {
-            let (data, response) = try await session.data(for: request)
-            
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.noResponseOrNotHTTPResponse
-            }
-#if DEBUG
-            print(response.statusCode)
-#endif
-            
-            switch response.statusCode {
-            case 200:
-                do {
-                    let finalJWTString = try getJWT(from: data)
-                    return JWToken(kind: .final, value: finalJWTString)
-                } catch {
-                    throw error
-                }
-            case 400:
-                throw NetworkError.failToPost
-            default:
-                throw NetworkError.unDefinedError
-            }
-        } catch {
-            throw error
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.noResponseOrNotHTTPResponse
+        }
+        
+        print(response.statusCode)
+        switch response.statusCode {
+        case 200:
+            let finalJWTString = try decodeAndGetJWT(from: data)
+            return JWToken(kind: .final, value: finalJWTString)
+        case 400:
+            throw NetworkError.failToPost
+        default:
+            throw NetworkError.unDefinedError
         }
     }
     
     func validateJWT(_ jwt: JWToken) async throws -> Bool {
-        let urlString = APICredential.baseURL + "/api/user/validateToken"
-        guard let url = URL(string: urlString) else { throw NetworkError.unDefinedError }
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.addValue("Bearer \(jwt.value)", forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 15
+        let (_, response) = try await get(
+            path: ["api", "user", "validateToken"],
+            authorized: .temp(jwt)
+        )
         
-        do {
-            let (_, response) = try await session.data(for: request)
-            
-            guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.noResponseOrNotHTTPResponse
-            }
-            #if DEBUG
-            print(response.statusCode)
-            #endif
-            
-            switch response.statusCode {
-            case 200:
-                return true
-            default:
-                return false
-            }
-        } catch {
-            throw error
+        guard let response = response as? HTTPURLResponse else {
+            throw NetworkError.noResponseOrNotHTTPResponse
         }
+        print(response.statusCode)
+        return response.statusCode == 200 ? true : false
     }
 }
