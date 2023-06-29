@@ -116,7 +116,7 @@ extension LoginViewController {
             }
             
             guard let callbackURL else {
-                ErrorHandler.alertError(NetworkError.unknownError, presentOn: self)
+                ErrorHandler.alertError(NetworkError.unDefinedError, presentOn: self)
                 return
             }
             
@@ -134,10 +134,6 @@ extension LoginViewController {
                     let jwt = try await self.manager.requestJWT(with: authCode)
                     switch jwt.kind {
                     case .final:
-                        #if DEBUG
-                        print(jwt.value)
-                        #endif
-                        
                         AuthManager().saveToken(jwt)
                     case .temp:
                         let tempInfo = SignUpTempInfo(jwt: jwt)

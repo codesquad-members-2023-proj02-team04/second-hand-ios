@@ -41,6 +41,52 @@ final class NetworkManager {
         }
         return json
     }
+    
+    private func makePath(with pathItems: [String]) -> String {
+        let base = APICredential.baseURL
+        return pathItems.reduce(base) { partial, item in partial + "/\(item)" }
+    }
+}
+
+extension NetworkManager {
+    enum HTTPMethod: String {
+        case get = "GET"
+        case post = "POST"
+    }
+    
+    enum Authorization {
+        case existing
+        case temp(JWToken)
+        case none
+    }
+    
+    static let defaultTimeoutInterval: TimeInterval = 15
+    
+    func get(
+        path: [String] = [],
+        queries: RequestParameters = [:],
+        authorized: Authorization = .existing
+    ) async throws -> (data: Data, response: URLResponse) {
+        let urlString = makePath(with: path)
+        guard var urlcomponent = URLComponents(string: urlString) else { throw NetworkError.unDefinedError }
+        let queryItems = queries.map { item in URLQueryItem(name: item.key, value: item.value) }
+        urlcomponent.queryItems = queryItems
+        guard let url = urlcomponent.url else { throw NetworkError.unDefinedError }
+        var request = URLRequest(url: url)
+        request.httpMethod = HTTPMethod.get.rawValue
+        request.timeoutInterval = Self.defaultTimeoutInterval
+        
+        switch authorized {
+        case .existing:
+            guard let token = AuthManager().token else { break }
+            request.addValue("Bearer \(token.value)", forHTTPHeaderField: "Authorization")
+        case .temp(let tempToken):
+            request.addValue("Bearer \(tempToken.value)", forHTTPHeaderField: "Authorization")
+        case .none:
+            break
+        }
+        return try await session.data(for: request)
+    }
 }
 
 extension NetworkManager {
@@ -64,20 +110,15 @@ extension NetworkManager {
 
 extension NetworkManager {
     func requestJWT(with authCode: String) async throws -> JWToken {
-        let urlString = APICredential.baseURL + "/api/login"
-        guard var urlcomponent = URLComponents(string: urlString) else { throw NetworkError.unknownError }
-        var query: RequestParameters = ["code": authCode, "clientType": "ios"]
-        let queryItems = query.map { item in URLQueryItem(name: item.key, value: item.value) }
-        urlcomponent.queryItems = queryItems
-        guard let url = urlcomponent.url else { throw NetworkError.unknownError }
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 15
-        
         do {
-            let (data, response) = try await session.data(for: request)
+            let (data, response) = try await get(
+                path: ["api", "login"],
+                queries: ["code": authCode, "clientType": "ios"],
+                authorized: .none
+            )
             
             guard let response = response as? HTTPURLResponse else {
-                throw NetworkError.noResponseOrNotHTTPResponse
+                throw NetworkError.noResponse
             }
             
             #if DEBUG
@@ -88,7 +129,7 @@ extension NetworkManager {
             switch response.statusCode {
             case 200: return JWToken(kind: .final, value: jwtValue)
             case 302: return JWToken(kind: .temp, value: jwtValue)
-            default: throw NetworkError.unknownError
+            default: throw NetworkError.unDefinedError
             }
         } catch {
             throw error
@@ -100,7 +141,7 @@ extension NetworkManager {
         data: RequestData
     ) async throws -> JWToken {
         let urlString = APICredential.baseURL + "/api/signup"
-        guard let url = URL(string: urlString) else { throw NetworkError.unknownError }
+        guard let url = URL(string: urlString) else { throw NetworkError.unDefinedError }
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.addValue("Bearer \(tempJWT.value)", forHTTPHeaderField: "Authorization")
@@ -129,7 +170,7 @@ extension NetworkManager {
             case 400:
                 throw NetworkError.failToPost
             default:
-                throw NetworkError.unknownError
+                throw NetworkError.unDefinedError
             }
         } catch {
             throw error
@@ -138,7 +179,7 @@ extension NetworkManager {
     
     func validateJWT(_ jwt: JWToken) async throws -> Bool {
         let urlString = APICredential.baseURL + "/api/user/validateToken"
-        guard let url = URL(string: urlString) else { throw NetworkError.unknownError }
+        guard let url = URL(string: urlString) else { throw NetworkError.unDefinedError }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.addValue("Bearer \(jwt.value)", forHTTPHeaderField: "Authorization")
