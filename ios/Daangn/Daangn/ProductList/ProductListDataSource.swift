@@ -24,12 +24,12 @@ final class ProductListDataSource: UICollectionViewDiffableDataSource<ProductLis
     
     static let cellProvider: CellProvider = { collectionView, indexPath, itemIdentifier in
         switch itemIdentifier {
-        case .product:
+        case .product(let product):
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: "\(ProductCell.self)",
                 for: indexPath
             ) as? ProductCell else { return UICollectionViewCell() }
-            cell.configure()
+            cell.configure(with: product)
             return cell
         case .load:
             guard let cell = collectionView.dequeueReusableCell(

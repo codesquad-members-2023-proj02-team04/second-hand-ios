@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         setLayout()
+        addObserver()
         
         getProducts()
     }
@@ -76,9 +77,24 @@ final class HomeViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateList),
+            name: Products.Notifications.ProductAdded,
+            object: nil
+        )
+    }
+}
+
+extension HomeViewController {
     @objc func moveToCategory() {
         let nextViewController = CategoryViewController()
         self.navigationController?.pushViewController(nextViewController, animated: true)
+    }
+    
+    @objc func updateList() {
+        self.applyUpdatedSnapshot()
     }
 }
 
