@@ -15,6 +15,8 @@ final class HomeViewController: UIViewController {
     
     let list = Products()
     
+    private let town = "역삼1동"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
@@ -47,8 +49,6 @@ final class HomeViewController: UIViewController {
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
-    private let town = "역삼1동"
-    
     private func menuHandler(action: UIAction) {
         Swift.debugPrint("Menu handler: \(action.title)")
     }
@@ -80,7 +80,9 @@ final class HomeViewController: UIViewController {
         let nextViewController = CategoryViewController()
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
-    
+}
+
+extension HomeViewController {
     private func getProducts() {
         Task { [weak self] in
             do {
