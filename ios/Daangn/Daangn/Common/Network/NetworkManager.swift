@@ -190,7 +190,7 @@ extension NetworkManager {
         page: Int,
         locationId: Int? = nil,
         categoryId: Int? = nil
-    ) async throws -> ProductList {
+    ) async throws -> ProductListOnPage {
         var queries = [ "page": "\(page)" ]
         if let locationId { queries.updateValue("\(locationId)", forKey: "locationId") }
         if let categoryId { queries.updateValue("\(categoryId)", forKey: "categoryId") }
@@ -207,7 +207,7 @@ extension NetworkManager {
         print(response.statusCode)
         switch response.statusCode {
         case 200:
-            let productList: ProductList = try decodeAndGet(from: data)
+            let productList: ProductListOnPage = try decodeAndGet(from: data)
             return productList
         case 404: throw NetworkError.notFound
         case 500: throw NetworkError.serverBroken

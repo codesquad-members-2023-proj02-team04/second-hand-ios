@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct ProductList: Decodable {
+struct ProductListOnPage: Decodable {
     let products: [Product]?
     let hasNext: Bool
 }

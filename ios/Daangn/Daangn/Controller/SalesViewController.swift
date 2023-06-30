@@ -69,7 +69,7 @@ class SalesViewController: UIViewController {
         var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
         snapshot.appendSections([.product, .load])
         // TODO: 임시 코드 수정
-        let products = (1...100).map { ProductListItem.product($0) }
+        let products = Products().products.map { ProductListItem.product($0) }
         snapshot.appendItems(products, toSection: .product)
         if true { snapshot.appendItems([.load], toSection: .load) }
         dataSource.apply(snapshot, animatingDifferences: true)

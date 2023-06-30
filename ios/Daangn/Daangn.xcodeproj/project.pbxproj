@@ -40,6 +40,8 @@
 		F4029F5A2A3BFE5500ECEABD /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4029F592A3BFE5500ECEABD /* CreateAccountViewController.swift */; };
 		F41BD2342A4DA4AE0039643D /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BD2332A4DA4AE0039643D /* Response.swift */; };
 		F41BD2372A4DA6F70039643D /* OrderedCollections in Frameworks */ = {isa = PBXBuildFile; productRef = F41BD2362A4DA6F70039643D /* OrderedCollections */; };
+		F41BD2392A4E70A70039643D /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BD2382A4E70A70039643D /* Products.swift */; };
+		F41BD23B2A4E70C50039643D /* Syncer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F41BD23A2A4E70C50039643D /* Syncer.swift */; };
 		F43818342A46DA8900B3FB20 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43818332A46DA8900B3FB20 /* KeychainManager.swift */; };
 		F43818362A46DAB200B3FB20 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F43818352A46DAB200B3FB20 /* AuthManager.swift */; };
 		F441BD042A492D7100702186 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F441BD032A492D7100702186 /* LoginViewController.swift */; };
@@ -60,7 +62,7 @@
 		F49F99022A309A6800609856 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = F49F99012A309A6800609856 /* .swiftlint.yml */; };
 		F4AEA7F42A3617D200B00B03 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4AEA7F32A3617D200B00B03 /* TabBarController.swift */; };
 		F4D525792A41C5DE00413119 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D525782A41C5DE00413119 /* NetworkManager.swift */; };
-		F4D5257B2A41C94100413119 /* ProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5257A2A41C94100413119 /* ProductList.swift */; };
+		F4D5257B2A41C94100413119 /* ProductListOnPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5257A2A41C94100413119 /* ProductListOnPage.swift */; };
 		F4D5257E2A429E6100413119 /* JWTDecode in Frameworks */ = {isa = PBXBuildFile; productRef = F4D5257D2A429E6100413119 /* JWTDecode */; };
 		F4D525802A43E80600413119 /* APICredential.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5257F2A43E80600413119 /* APICredential.swift */; };
 		F4D525832A4513F100413119 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D525822A4513F100413119 /* NetworkError.swift */; };
@@ -101,6 +103,8 @@
 		F4029F572A3BA54400ECEABD /* TownButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TownButton.swift; sourceTree = "<group>"; };
 		F4029F592A3BFE5500ECEABD /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		F41BD2332A4DA4AE0039643D /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		F41BD2382A4E70A70039643D /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
+		F41BD23A2A4E70C50039643D /* Syncer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Syncer.swift; sourceTree = "<group>"; };
 		F43818332A46DA8900B3FB20 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
 		F43818352A46DAB200B3FB20 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		F441BD032A492D7100702186 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -123,7 +127,7 @@
 		F49F99012A309A6800609856 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		F4AEA7F32A3617D200B00B03 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		F4D525782A41C5DE00413119 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
-		F4D5257A2A41C94100413119 /* ProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductList.swift; sourceTree = "<group>"; };
+		F4D5257A2A41C94100413119 /* ProductListOnPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductListOnPage.swift; sourceTree = "<group>"; };
 		F4D5257F2A43E80600413119 /* APICredential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APICredential.swift; sourceTree = "<group>"; };
 		F4D525822A4513F100413119 /* NetworkError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
 		F4D525842A45173B00413119 /* JWToken.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JWToken.swift; sourceTree = "<group>"; };
@@ -196,11 +200,12 @@
 				F441BD052A49347400702186 /* ErrorHandler.swift */,
 				F441BD0B2A49E45600702186 /* WindowHandler.swift */,
 				F43818322A46DA7700B3FB20 /* Network */,
-				F4D5257A2A41C94100413119 /* ProductList.swift */,
+				F4D5257A2A41C94100413119 /* ProductListOnPage.swift */,
 				F41BD2332A4DA4AE0039643D /* Response.swift */,
 				F4D525842A45173B00413119 /* JWToken.swift */,
 				F4D525862A45519B00413119 /* SignUpTempInfo.swift */,
 				F441BD0F2A49EE7E00702186 /* UserInfo.swift */,
+				F41BD23A2A4E70C50039643D /* Syncer.swift */,
 				F43818372A46DABA00B3FB20 /* Auth */,
 			);
 			path = Common;
@@ -227,6 +232,7 @@
 			children = (
 				F4029F462A3B5D9900ECEABD /* Category.swift */,
 				F4029F312A3B571300ECEABD /* ProductState.swift */,
+				F41BD2382A4E70A70039643D /* Products.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -473,6 +479,7 @@
 				F4029F4D2A3B61A400ECEABD /* SalesViewController.swift in Sources */,
 				F43818342A46DA8900B3FB20 /* KeychainManager.swift in Sources */,
 				F4D525852A45173B00413119 /* JWToken.swift in Sources */,
+				F41BD2392A4E70A70039643D /* Products.swift in Sources */,
 				F4029F2E2A3B56D300ECEABD /* PaddedLabel.swift in Sources */,
 				F4D525832A4513F100413119 /* NetworkError.swift in Sources */,
 				F4029F442A3B5D6E00ECEABD /* CategoryFilterCollectionView.swift in Sources */,
@@ -481,7 +488,7 @@
 				F4029F472A3B5D9900ECEABD /* Category.swift in Sources */,
 				F4029F322A3B571300ECEABD /* ProductState.swift in Sources */,
 				F4029F3D2A3B5CE700ECEABD /* ProductListCollectionView.swift in Sources */,
-				F4D5257B2A41C94100413119 /* ProductList.swift in Sources */,
+				F4D5257B2A41C94100413119 /* ProductListOnPage.swift in Sources */,
 				F47AFF652A3C8AAB00BA75A1 /* CategoryCollectionViewCell.swift in Sources */,
 				F4029F272A3B557500ECEABD /* UILabel+style.swift in Sources */,
 				F4029F212A3B54D200ECEABD /* Radius.swift in Sources */,
@@ -500,6 +507,7 @@
 				F41BD2342A4DA4AE0039643D /* Response.swift in Sources */,
 				F4029F5A2A3BFE5500ECEABD /* CreateAccountViewController.swift in Sources */,
 				4F35D2612A3813B900DE2CBA /* WatchlistViewController.swift in Sources */,
+				F41BD23B2A4E70C50039643D /* Syncer.swift in Sources */,
 				4FE271542A31C0F50002AE35 /* ColorStyle.swift in Sources */,
 				F441BD042A492D7100702186 /* LoginViewController.swift in Sources */,
 				4FE271562A31C4820002AE35 /* FontStyle.swift in Sources */,

@@ -14,7 +14,7 @@ enum ProductListSection {
 
 enum ProductListItem: Hashable {
     // TODO: Int > Product 타입으로 교체
-    case product(Int)
+    case product(Product)
     case load
 }
 

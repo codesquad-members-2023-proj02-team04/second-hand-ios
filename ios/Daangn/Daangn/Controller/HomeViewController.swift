@@ -13,11 +13,12 @@ final class HomeViewController: UIViewController {
     
     let manager = NetworkManager()
     
+    let list = Products()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         setLayout()
-        applyUpdatedSnapshot()
         
         getProducts()
     }
@@ -40,10 +41,9 @@ final class HomeViewController: UIViewController {
     private func applyUpdatedSnapshot() {
         var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
         snapshot.appendSections([.product, .load])
-        // TODO: 임시 코드 수정
-        let products = (1...100).map { ProductListItem.product($0) }
+        let products = list.products.map { ProductListItem.product($0) }
         snapshot.appendItems(products, toSection: .product)
-        if true { snapshot.appendItems([.load], toSection: .load) }
+        if list.hasNextPage { snapshot.appendItems([.load], toSection: .load) }
         dataSource.apply(snapshot, animatingDifferences: true)
     }
     
@@ -82,10 +82,11 @@ final class HomeViewController: UIViewController {
     }
     
     private func getProducts() {
-        Task {
+        Task { [weak self] in
             do {
-                let list = try await manager.getProducts(page: 0)
-                guard let products = list.products else { throw NetworkError.noData }
+                guard let self else { return }
+                let list = try await self.manager.getProducts(page: 0)
+                ProductListSyncer.syncAppend(to: self.list, newDTO: list)
             } catch {
                 print(error)
             }
