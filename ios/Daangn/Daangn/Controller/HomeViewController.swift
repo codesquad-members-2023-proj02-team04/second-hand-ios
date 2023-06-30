@@ -13,13 +13,18 @@ final class HomeViewController: UIViewController {
     
     let manager = NetworkManager()
     
+    let list = Products()
+    
+    private let town = "역삼1동"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBar()
         setLayout()
-        applyUpdatedSnapshot()
+        collectionView.delegate = self
+        addObserver()
         
-//        get()
+        getProducts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,18 +41,6 @@ final class HomeViewController: UIViewController {
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-    
-    private func applyUpdatedSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
-        snapshot.appendSections([.product, .load])
-        // TODO: 임시 코드 수정
-        let products = (1...100).map { ProductListItem.product($0) }
-        snapshot.appendItems(products, toSection: .product)
-        if true { snapshot.appendItems([.load], toSection: .load) }
-        dataSource.apply(snapshot, animatingDifferences: true)
-    }
-    
-    private let town = "역삼1동"
     
     private func menuHandler(action: UIAction) {
         Swift.debugPrint("Menu handler: \(action.title)")
@@ -76,11 +69,61 @@ final class HomeViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = .black
     }
     
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(updateList),
+            name: Products.Notifications.ProductAdded,
+            object: nil
+        )
+    }
+}
+
+extension HomeViewController {
     @objc func moveToCategory() {
         let nextViewController = CategoryViewController()
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
-    private func get() {
+    @objc func updateList() {
+        self.applyUpdatedSnapshot()
+    }
+}
+
+extension HomeViewController {
+    private func getProducts() {
+        Task { [weak self] in
+            do {
+                guard let self else { return }
+                let list = try await self.manager.getProducts(page: self.list.page)
+                ProductListSyncer.syncAppend(to: self.list, newDTO: list)
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    private func applyUpdatedSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
+        snapshot.appendSections([.product])
+        let products = list.products.map { ProductListItem.product($0) }
+        snapshot.appendItems(products, toSection: .product)
+        if list.hasNextPage {
+            snapshot.appendSections([.load])
+            snapshot.appendItems([.load], toSection: .load)
+        }
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(
+       _ collectionView: UICollectionView,
+       willDisplay cell: UICollectionViewCell,
+       forItemAt indexPath: IndexPath
+    ) {
+        if indexPath == IndexPath(item: 0, section: 1) && list.hasNextPage {
+          getProducts()
+       }
     }
 }

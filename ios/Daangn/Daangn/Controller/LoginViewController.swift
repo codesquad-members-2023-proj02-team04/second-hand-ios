@@ -98,6 +98,10 @@ final class LoginViewController: UIViewController {
     private func setButtons() {
         loginButton.addTarget(nil, action: #selector(loginWithGithub), for: .touchUpInside)
     }
+    
+    private func present(error: Error) {
+        ErrorHandler.alertError(NetworkError.authCodeIsNil, presentOn: self)
+    }
 }
 
 extension LoginViewController {
@@ -111,12 +115,12 @@ extension LoginViewController {
             guard let self else { return }
             
             if let error {
-                ErrorHandler.alertError(error, presentOn: self)
+                present(error: error)
                 return
             }
             
             guard let callbackURL else {
-                ErrorHandler.alertError(NetworkError.unknownError, presentOn: self)
+                present(error: NetworkError.unDefinedError)
                 return
             }
             
@@ -124,20 +128,17 @@ extension LoginViewController {
             let authCode = queryItems?.first { $0.name == "code" }?.value
             
             guard let authCode else {
-                ErrorHandler.alertError(NetworkError.authCodeIsNil, presentOn: self)
+                present(error: NetworkError.authCodeIsNil)
                 return
             }
             
             Task { [weak self] in
                 guard let self else { return }
                 do {
-                    let jwt = try await self.manager.requestJWT(with: authCode)
+                    let jwt = try await self.manager.getJWT(with: authCode)
                     switch jwt.kind {
                     case .final:
-                        #if DEBUG
-                        print(jwt.value)
-                        #endif
-                        
+//                        dump(jwt)
                         AuthManager().saveToken(jwt)
                     case .temp:
                         let tempInfo = SignUpTempInfo(jwt: jwt)
@@ -147,7 +148,7 @@ extension LoginViewController {
                         self.present(navigationController, animated: true)
                     }
                 } catch {
-                    ErrorHandler.alertError(error, presentOn: self)
+                    present(error: error)
                 }
             }
         }

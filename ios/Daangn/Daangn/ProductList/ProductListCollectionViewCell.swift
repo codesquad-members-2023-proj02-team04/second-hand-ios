@@ -178,16 +178,16 @@ final class ProductListCollectionViewCell: UICollectionViewCell {
 extension ProductListCollectionViewCell {
     // MARK: Cell Configure
     
-    func configure() {
+    func configure(with product: Product) {
         //        productImage.image = UIImage(named: "")
-        titleLabel.text = "글 제목"
-        locationLabel.text = "역삼동"
+        titleLabel.text = product.title
+        locationLabel.text = product.location.district
         timeStampLabel.text = "2시간 전"
         stateBadge.configure(state: .reserved)
-        priceLabel.text = "24,500원"
+        priceLabel.text = "\((product.price ?? 0))" + "원"
         
-        chatCountLabel.text = "0"
-        heartCountLabel.text = "0"
+        chatCountLabel.text = "\(product.chatroomCounts)"
+        heartCountLabel.text = "\(product.watchlistCounts)"
     }
 }
 
