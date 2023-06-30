@@ -21,6 +21,7 @@ final class HomeViewController: UIViewController {
         super.viewDidLoad()
         setNavigationBar()
         setLayout()
+        collectionView.delegate = self
         addObserver()
         
         getProducts()
@@ -39,15 +40,6 @@ final class HomeViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
-    }
-    
-    private func applyUpdatedSnapshot() {
-        var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
-        snapshot.appendSections([.product, .load])
-        let products = list.products.map { ProductListItem.product($0) }
-        snapshot.appendItems(products, toSection: .product)
-        if list.hasNextPage { snapshot.appendItems([.load], toSection: .load) }
-        dataSource.apply(snapshot, animatingDifferences: true)
     }
     
     private func menuHandler(action: UIAction) {
@@ -103,11 +95,35 @@ extension HomeViewController {
         Task { [weak self] in
             do {
                 guard let self else { return }
-                let list = try await self.manager.getProducts(page: 0)
+                let list = try await self.manager.getProducts(page: self.list.page)
                 ProductListSyncer.syncAppend(to: self.list, newDTO: list)
             } catch {
                 print(error)
             }
         }
+    }
+    
+    private func applyUpdatedSnapshot() {
+        var snapshot = NSDiffableDataSourceSnapshot<ProductListSection, ProductListItem>()
+        snapshot.appendSections([.product])
+        let products = list.products.map { ProductListItem.product($0) }
+        snapshot.appendItems(products, toSection: .product)
+        if list.hasNextPage {
+            snapshot.appendSections([.load])
+            snapshot.appendItems([.load], toSection: .load)
+        }
+        dataSource.apply(snapshot, animatingDifferences: true)
+    }
+}
+
+extension HomeViewController: UICollectionViewDelegate {
+    func collectionView(
+       _ collectionView: UICollectionView,
+       willDisplay cell: UICollectionViewCell,
+       forItemAt indexPath: IndexPath
+    ) {
+        if indexPath == IndexPath(item: 0, section: 1) && list.hasNextPage {
+          getProducts()
+       }
     }
 }

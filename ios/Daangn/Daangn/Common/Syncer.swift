@@ -23,7 +23,6 @@ enum ProductListSyncer: ListSyncer {
             list.endPagination()
             return
         }
-        
         list.add(newItems)
         if newDTO.hasNext == false { list.endPagination() }
     }
